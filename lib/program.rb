@@ -7,7 +7,7 @@ require './lib/program/class_ReportFile.rb'
 
 # start of "main" program
 # read credentials from a file
-file_name = './data/login_creds.json'
+file_name = './data/login_creds_.json'
 credentials = Credentials.new(file_name)
 creds_hash = credentials.read_creds
 
@@ -23,7 +23,7 @@ auth_hash = authorization.request_token
 # available_reports = available_reports_obj.get_list
 # puts available_reports.to_s
 
-# The report ID numbers below are for custom reports 
+# The report ID numbers below are for custom reports
 # and are unique to a business unit.
 # Set up the reports paramaters
 report_id = '11250'
@@ -56,16 +56,18 @@ loop do
     @status = status
   end
 
+  # Check how long since loop started
   current_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
   et = current_time - loop_start_time
   et = et.ceil
 
   puts "Elapsed time: #{et}, status: #{status}"
 
+  # Stop looping once report is finished
   break if status == 'finished' || et > 300
 end
 
-# Once the report's status is 'finished' download to memory
+# When report's status is 'finished' download to memory
 if @status == 'finished'
   report = ReportFile.new(auth_hash, @status_hash)
   report.get_file
