@@ -64,7 +64,7 @@ loop do
   puts "Elapsed time: #{et}, status: #{status}"
 
   # Stop looping once report is finished
-  break if status == 'finished' || et > 300
+  break if (status == 'finished' || status == 'error' || et > 900)
 end
 
 # When report's status is 'finished' download to memory
